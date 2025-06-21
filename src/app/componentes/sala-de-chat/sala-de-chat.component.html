@@ -1,0 +1,29 @@
+<body >
+    <div class="container mt-5">
+        <!--  <div class="input-group mb-3">
+        <form >
+            <input type="text" class="form-control" [(ngModel)]="content" placeholder="Escribe un mensaje..">
+
+        </form>
+        
+    </div> -->
+        <div style="overflow: auto;">
+            <ul class="list-group" *ngFor="let post of posts">
+                <li class="list-group-item" (click)="getPost(post.id)" [ngClass]="esPostPropio(post.usuario)">
+                    <small>{{post.timestamp | date:"dd/MM/yy h:mm a"}}</small>
+                    <br>
+                    <strong>{{ post.usuario}}</strong>
+                    <br>
+                    <p style="background-color:rgba(255, 255, 255, 0.39); border-radius: 5px;">
+                        {{post.contenido}}
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <form class="mt-5" #f>
+            <input [(ngModel)]="content" name="content" placeholder="Escribe un mensaje..">
+            <input type="submit" value="Enviar" (click)="addPost(f)">
+        </form>
+
+    </div>
+</body>

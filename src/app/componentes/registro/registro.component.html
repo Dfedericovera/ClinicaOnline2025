@@ -1,0 +1,99 @@
+<div class="container">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="/images/mario.png" alt="" width="72" height="72">
+        <h2>Sala de juegos</h2>
+        <p class="lead">Por favor regístrate para poder guardar tu progreso.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <h4 class="mb-3">Datos Necesarios</h4>
+            <form class="needs-validation" [formGroup]="userForm" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">Nombre</label>
+                        <input type="text" class="form-control" id="firstName" formControlName="name" placeholder=""
+                            value="" required>
+                        <div *ngIf="userForm.controls['name'].invalid && (userForm.controls['name'].dirty || userForm.controls['name'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['name'].errors && userForm.controls['name'].errors['required']">
+                                Nombre es requerido.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Apellido</label>
+                        <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder=""
+                            value="" required>
+                        <div *ngIf="userForm.controls['lastName'].invalid && (userForm.controls['lastName'].dirty || userForm.controls['lastName'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['lastName'].errors && userForm.controls['lastName'].errors['required']">
+                                Apellido es requerido.
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email">Correo <span class="text-muted"></span></label>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                        placeholder="minombre@ejemplo.com">
+                    <div *ngIf="userForm.controls['email'].invalid && (userForm.controls['email'].dirty || userForm.controls['email'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="userForm.controls['email'].errors && userForm.controls['email'].errors['required']">
+                            El email es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address">Contraseña</label>
+                    <input type="password" class="form-control" id="address" formControlName="password"
+                        placeholder="Contraseña" minlength="6" required>
+                    <div *ngIf="userForm.controls['password'].invalid && (userForm.controls['password'].dirty || userForm.controls['password'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="userForm.controls['password'].errors && userForm.controls['password'].errors['required']">
+                            La contraseña es requerida.
+                        </div>
+                        
+                        <div *ngIf="userForm.controls['password'].errors && userForm.controls['password'].errors['minlength']">
+                            La contraseña debe contener al menos 6 caracteres.
+                        </div>
+                    </div>
+                </div>
+                <div class="container" *ngIf="submitted">
+                    <app-alert [mensaje]="mensaje" [color]="colorAlert" (dismiss)="navigate()"></app-alert>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <div class="form-group">
+                            <label for="fotos">Fotos</label>
+                            <input type="file" class="form-control-file" id="fotos" (change)="handlePhoto1($event)">
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                    </div>
+                </div> 
+                <hr class="mb-4">[disabled]="userForm.controls.pristine || userForm.controls.invalid"-->
+                <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="onSubmit()"
+                    [disabled]="userForm.invalid">Registrarme</button>
+                <button class="btn btn-danger btn-lg btn-block" routerLink="/Login">Ya tengo una
+                    cuenta</button>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; Federico Vera</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+    </footer>
+</div>

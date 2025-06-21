@@ -1,0 +1,90 @@
+<body class="background">
+    <div class="teclado" id="teclado">
+
+        <div class="menu" *ngIf='isPlaying'>
+            <div class="card-deck mb-3 row">
+                <div class="card mb-3 shadow-sm text-white bg-dark" style="min-width: 220px; max-width: 220px; min-height: 320px; max-height: 320px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div class="border border-warning" style="flex: 1 1 auto;">
+                        <div class="card-body" style="padding: 1rem;">
+                            <div class="text-white d-flex flex-column justify-content-center align-items-center text-left" style="height:180px; width:180px; word-break:normal; padding: 6px;">
+                                <p style="font-size: 0.90rem; margin-bottom: 0.4rem;">
+                                    Tu suerte es el porcentaje
+                                    que sube al tirar la moneda.
+                                </p>
+                            </div>
+                            <div style="margin-top: auto; width: 100%;">
+                                <p style="font-weight: bold; font-size: 1rem; text-align: center;">Suerte: {{suerte}}</p>
+                            </div>
+                            <div class="progress vertical d-flex flex-row-reverse"
+                                style="position: absolute; right: 0; top: 10px;">
+                                <div role="progressbar" #progressbar class="progress-bar "><span
+                                        class="sr-only">Primary</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary mt-2" (click)='lanzarMoneda(progressbar)'>
+                        LANZAR MONEDA</button>
+                </div>
+                <div class="card mb-3 shadow-sm text-white bg-dark" style="min-width: 220px; max-width: 220px; min-height: 320px; max-height: 320px; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="border border-primary" [@cardState]="lanzoMoneda ? 'spin' : 'blank'"
+                        [ngClass]="{'spin': isSpining, 'moneda': !isSpining}" #spin style="flex: 1 1 auto;">
+                        <div class="card-body d-flex justify-content-center align-items-center h-100" style="height: 180px;">
+                            <img *ngIf="!isSpining" id="moneda" src="{{monedaActual}}" alt="" style="max-width: 100%; max-height: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MENU -->
+        <div *ngIf='!isPlaying' class="menu">
+            <div class="container">
+                <div class="card-deck mb-3 text-center  ">
+
+                    <div class="card mb-4 shadow-sm text-white bg-dark border border-primary">
+
+
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Cara o Ceca</h4>
+
+                        </div>
+
+                        <div class="card-body">
+                            <p *ngIf="!caraoceca.gano">Probá tu suerte, elegí cara o ceca</p>
+                            <div class="row">
+                                <div class="imagenFondo border col-sm rounded-circle" #card
+                                    [ngClass]="caraoceca.monedas[0].isTouched ? 'border-warning' : 'border-dark'">
+                                    <div class="card-body pointer">
+                                        <img class="pointer" src="{{caraoceca.monedas[0].img}}" alt=""
+                                            class="responsive" (click)='seleccionarCara(0)'>
+                                    </div>
+                                </div>
+                                <div class="imagenFondo border col-sm rounded-circle" #card
+                                    [ngClass]="caraoceca.monedas[1].isTouched ? 'border-warning' : 'border-dark'">
+                                    <div class="card-body pointer">
+                                        <img class="pointer" src="{{caraoceca.monedas[1].img}}" alt=""
+                                            class="responsive" (click)='seleccionarCara(1)'>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <p *ngIf="!caraoceca.gano">La probabilidad de que ganes empezará en 1% <br> Crees lograrlo
+                                en el
+                                primer intento? <br> cruza los dedos!</p>
+                            <p *ngIf="caraoceca.gano">Ganaste! con una probabilidad de: {{this.suerte}}% </p>
+                            <!-- <img src="../../../assets/imagenes/listado.jpg" alt="" class="responsive"> -->
+                            <button *ngIf="!caraoceca.gano" type="button"
+                                class="btn btn-lg btn-block btn-outline-success"
+                                [disabled]="!caraoceca.monedaSeleccionada" (click)="jugar()">Jugar</button>
+                            <button *ngIf="caraoceca.gano" type="button"
+                                class="btn btn-lg btn-block btn-outline-success"
+                                [disabled]="!caraoceca.monedaSeleccionada" (click)="reiniciar()">Jugar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

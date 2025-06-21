@@ -1,0 +1,33 @@
+<div class="jumbotron text-center">
+    <h1 class="display-4">Bienvenido a la sala de juegos!</h1>
+    <p class="lead">En esta sala podras jugar a diferentes juegos que te ayudaran a mejorar tus habilidades.</p>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Juegos</h2>
+            <p class="text-center">Selecciona un juego para comenzar a jugar.</p>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid min-vh-50 d-flex flex-column justify-content-center align-items-center p-0" style="background: #3b3b3ba8;">
+    <div class="row justify-content-center w-100 mt-5">
+        <div class="col-md-3 mb-4" *ngFor="let juego of [
+            {nombre: 'Ahorcado', img: '/images/ahorcado.gif', link: '../Ahorcado'},
+            {nombre: 'Mayor o menor', img: '/images/mayormenor.gif', link: '/MayorOMenor'},
+            {nombre: 'Preguntados', img: '/images/preguntados.gif', link: '/Preguntados'},
+            {nombre: 'Cara o seca', img: '/images/caraoseca.jpg', link: '/Caraoseca'}
+        ]">
+            <div class="card h-100 shadow-sm text-white bg-dark border border-primary">
+                <div class="card-header text-center">
+                    <h4 class="my-0 font-weight-normal">{{ juego.nombre }}</h4>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <img [src]="juego.img" alt="{{ juego.nombre }}" class="img-fluid mb-3" style="max-height:120px;">
+                    <a class="btn btn-primary btn-lg" [routerLink]="juego.link" role="button">Jugar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

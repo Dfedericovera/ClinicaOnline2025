@@ -1,0 +1,160 @@
+<br><br>
+<div class="container">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="/images/mario.png" alt="" width="72" height="72">
+        <h2>Sala de juegos</h2>
+        <p class="lead">Esta es una encuesta para nuestros usuarios.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <h4 class="mb-3">Preguntas</h4>
+            <form class="needs-validation" [formGroup]="userForm!" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" formControlName="nombre"
+                            placeholder="Nombre" minlength="3" required>
+                        <div *ngIf="userForm.controls['nombre']?.invalid && (userForm.controls['nombre']?.dirty || userForm.controls['nombre']?.touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['nombre']?.errors?.['required']">
+                                El nombre es requerido.
+                            </div>
+                            <div *ngIf="userForm.controls['nombre']?.errors?.['minlength']">
+                                El nombre debe contener al menos 3 caracteres.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" formControlName="apellido"
+                            placeholder="Apellido" minlength="3" required>
+                        <div *ngIf="userForm.controls['apellido'].invalid && (userForm.controls['apellido'].dirty || userForm.controls['apellido'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['apellido'].errors?.['required']">
+                                El apellido es requerido.
+                            </div>
+                            <div *ngIf="userForm.controls['apellido']?.errors?.['minlength']">
+                                El apellido debe contener al menos 3 caracteres.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="edad">Edad</label>
+                        <input type="number" class="form-control" id="edad" formControlName="edad"
+                            placeholder="Edad"  required>
+                        <div *ngIf="userForm.controls['edad'].invalid && (userForm.controls['edad'].dirty || userForm.controls['edad'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['edad'].errors?.['required']">
+                                El edad es requerida.
+                            </div>
+                            <div *ngIf="userForm.controls['edad'].errors?.['min']">
+                                Debe ser mayor de 18 años.
+                            </div>
+                            <div *ngIf="userForm.controls['edad'].errors?.['max']">
+                                Debe ser menor de 99 años.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" formControlName="telefono"
+                            placeholder="Telefono"  required>
+                        <div *ngIf="userForm.controls['telefono'].invalid && (userForm.controls['telefono'].dirty || userForm.controls['telefono'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="userForm.controls['telefono'].errors?.['required']">
+                                El telefono es requerido.
+                            </div>
+                            <div *ngIf="userForm.controls['telefono'].errors?.['maxlength']">
+                                El telefono no debe contener mas de 10 caracteres.
+                            </div>
+                            <div *ngIf="userForm.controls['telefono'].errors?.['pattern']">
+                                El telefono debe contener solo números.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="">En una escala del 1 al 5 ¿Cuan satisfecho esta con los juegos? <span
+                            class="text-muted"></span></label>
+                    <br>
+                    <input type="range" class="form-range" min="0" max="5" id="customRange2" style="width: 50vw;"
+                        value="1" formControlName="satisfecho">
+                    <br>
+                    <p><b>{{userForm.controls['satisfecho'].value}}</b></p>
+                </div>
+                <div class="mb-3">
+                    <label for="ocio">¿Cuanto tiempo le dedica al ocio? <span class="text-muted"></span></label>
+                    <br>
+                    <select class="form-select" size="4" aria-label="size 3 select example" required #ocio
+                        formControlName="tiempoOcio">
+                        <option value="Menos de 1 hora">Menos de 1 hora</option>
+                        <option value="2 horas">2 horas</option>
+                        <option value="3 horas">3 horas</option>
+                        <option value="4 horas o +">4 horas o +</option>
+                    </select>
+                    <div *ngIf="userForm.controls['tiempoOcio'].pristine" class="alert alert-danger">
+                        <div *ngIf="userForm.controls['tiempoOcio'].errors?.['required']">
+                            Este campo es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="">¿Que tipo de juego prefiere?</label>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipoJuego" id="inlineRadio1"
+                            formControlName="tipoJuego" value="Estrategia">
+                        <label class="form-check-label" for="inlineRadio1">Estrategia</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipoJuego" id="inlineRadio2"
+                            formControlName="tipoJuego" value="Acción">
+                        <label class="form-check-label" for="inlineRadio2">Acción</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipoJuego" id="inlineRadio3"
+                            formControlName="tipoJuego" value="Juegos de Mesa">
+                        <label class="form-check-label" for="inlineRadio3">Juegos de Mesa</label>
+                    </div>
+                    <div *ngIf="userForm.controls['tipoJuego'].pristine" class="alert alert-danger">
+                        <div *ngIf="userForm.controls['tipoJuego'].errors?.['required']">
+                            Este campo es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address">¿Tienes alguna sugerencia?</label>
+                    <input type="text" class="form-control" id="address" formControlName="sugerencia"
+                        placeholder="Cuentanos tu opinión" minlength="6">
+                    <div *ngIf="userForm.controls['sugerencia'].invalid && (userForm.controls['sugerencia'].dirty || userForm.controls['sugerencia'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="userForm.controls['sugerencia'].errors?.['minlength']">
+                            La sugerencia debe contener al menos 6 caracteres.
+                        </div>
+                    </div>
+                </div>
+                <div class="container" *ngIf="submitted">
+                    <app-alert [mensaje]="mensaje" [color]="colorAlert" (dismiss)="navigate()"></app-alert>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="onSubmit()"
+                    [disabled]="userForm.invalid">Enviar</button>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; Federico Vera</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+    </footer>
+</div>

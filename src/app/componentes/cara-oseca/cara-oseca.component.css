@@ -1,0 +1,95 @@
+/* 
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+  }
+
+  @media (min-width: 768px) {
+	.bd-placeholder-img-lg {
+	  font-size: 3.5rem;
+	}
+  }    
+  html {
+	font-size: 14px;
+  }
+  @media (min-width: 768px) {
+	html {
+	  font-size: 16px;
+	}
+  }
+   */
+  .container {
+	max-width: 960px;
+  }
+  /* 
+  .pricing-header {
+	max-width: 700px;
+  } */
+  
+  .card-deck .card {
+	min-width: 125px;
+  }
+  .responsive {
+	width: 100%;
+	height: 70%;
+  }
+  .imagenFondo{
+	background-image: url(/images/cartaMemotest.jpg);
+  }
+  .pointer{
+    cursor: pointer;    
+  }
+  body {
+  background-color: rgb(94, 94, 94);
+}
+  
+  .moneda{
+    background-image: url(/images/cartaMemotest.jpg);
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+  #moneda{
+    display:block;
+    margin:auto;
+  }
+
+  .spin{
+    background-image: url(/images/acertijo.jfif);
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+
+  .showCharacter{
+    opacity: 0;
+  }
+
+  .menu{
+    position: absolute;
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  }
+
+  .background {
+    /* background-image: url("/images/banner\ grande.jpg"); */
+    height: 100vh;
+    width: 100vw;
+  }
+
+.teclado{ 
+  width:65vw; height:100vh;
+	margin:0 auto;
+	background-image: -webkit-linear-gradient(#9098a3, #48525f);
+	border-radius:0 0 4px 4px;
+	border-top:1px solid #252525;
+	box-shadow:0 1px 2px rgba(255, 255, 255, .5) inset;
+	text-align:center;
+	letter-spacing:8px;
+	line-height:1.6;}
