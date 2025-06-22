@@ -4,6 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service.service';
 import { CommonModule } from '@angular/common';
 import { AlertComponent } from '../../componentes/alert/alert.component';
+import { Patient } from '../../clases/patient';
+import { Professional } from '../../clases/professional';
+import { Administrator } from '../../clases/administrator';
+import { Subscription } from 'rxjs';
+import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-login',
@@ -15,83 +20,223 @@ import { AlertComponent } from '../../componentes/alert/alert.component';
 export class LoginComponent {
 
   loginForm: FormGroup = new FormGroup({});
+  bootColorAlert: string = "primary";
   mensaje: string = "";
-  submitted: boolean = false;
-  colorAlert: string = "alert-danger";
-  
+  condicion: boolean = false;
+  testing: boolean = false;
+  patientTesting: Patient | undefined;
+  patientTesting2: Patient | undefined;
+  patientTesting3: Patient | undefined;
+  professionalTesting: Professional | undefined;
+  professionalTesting2: Professional | undefined;
+  administratorTesting: Administrator | undefined;
+  spinner: boolean;
+  submitted: boolean;
+  user$: Subscription = new Subscription();
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
-  ) { this.createForm() }
-
-  ngOnInit(): void {
+    private authService: AuthService,
+    // private patientService: PatientService,
+    // private professionalService: ProfessionalService,
+    // private administratorService: AdministratorService
+  )
+  {
+    this.createForm();
+    this.condicion = false;
+    this.testing = false;
+    this.spinner = false;
+    this.submitted = false;
   }
 
-  createForm() {
-    this.loginForm = this.fb.group({
-      email: ["", Validators.required],
-      password: ["", Validators.required]
-    });
+  ngOnInit(): void
+  {
+    this.loadTesters();
   }
 
-  onLogin() {
-
-    console.log('Login', this.loginForm.value);
-
-    this.authService.login(
-      this.loginForm.controls['email'].value,
-      this.loginForm.controls['password'].value
-    ).then((response) => {
-      console.log('Login successful', response);
-
-        this.colorAlert = "alert-success"
-        this.mensaje = "Verificado✓";
-        this.submitted = true;
-        setTimeout(() => {
-          this.router.navigate(['/Home']);
-        }, 2000)
-      
-
-
-    }).catch((error) => {
-      console.error('Login failed', error);
-      this.colorAlert = "alert-danger"
-        this.mensaje = error.message;
-        this.submitted = true;
-        console.log('Usuario no registrado', error)
-    });
-
-    // this.authService.supabase.auth.signInWithPassword({
-    //   email: this.loginForm.controls['email'].value,
-    //   password: this.loginForm.controls['password'].value
-    // }).then((response) => {
-    //   if (response.error) {
-    //     this.colorAlert = "alert-danger"
-    //     this.mensaje = response.error.message;
-    //     this.submitted = true;
-    //     console.log('Usuario no registrado', response.error)
-    //   } else {
-    //     this.colorAlert = "alert-success"
-    //     this.mensaje = "Verificado✓";
-    //     this.submitted = true;
-    //     setTimeout(() => {
-    //       this.router.navigate(['/home']);
-    //     }, 2000)
-    //   }
-    // }).catch((error: { message: string; }) => {
-    //   this.colorAlert = "alert-danger"
-    //   this.mensaje = error.message;
-    //   this.submitted = true;
-    //   console.log('Usuario no registrado', error)
+  ngOnDestroy(){
+    if(this.user$){
+      this.user$.unsubscribe();
+    }
+    
+  }
+  loadTesters()
+  {
+    // this.patientService.getPatientById("cEewD51RQsYrvaYHQ3eRAzkUHDJ3").then(testintgPatient =>
+    // {
+    //   this.patientTesting = testintgPatient;
+    // })
+    // this.patientService.getPatientById("eJy59XbCO5e4zkUplxg8D2qTmpJ2").then(testintgPatient =>
+    // {
+    //   this.patientTesting2 = testintgPatient;
+    // })
+    // this.patientService.getPatientById("EDbEwSOa7LffKBoGvCb1tjYcdvf1").then(testintgPatient =>
+    // {
+    //   this.patientTesting3 = testintgPatient;
+    // })
+    // this.professionalService.getProfessionalById("Gl3GGMtAYrWBeX4640f7mLvPTKx1").then(testingProfessional =>
+    // {
+    //   this.professionalTesting = testingProfessional;
+    // })
+    // this.professionalService.getProfessionalById("R2imG9PU9RhpfrgMhztOcJP6dSM2").then(testingProfessional =>
+    // {
+    //   this.professionalTesting2 = testingProfessional;
+    // })
+    // this.administratorService.getAdministratorById("R3zdRbRiInOlAqSyD4NDakhcBR13").then(testingAdministrator =>
+    // {
+    //   this.administratorTesting = testingAdministrator;
     // })
   }
 
-  entrarComoAdmin() {
-    if (this.loginForm) {
-      this.loginForm.controls['email'].setValue("admin@admin.com");
-      this.loginForm.controls['password'].setValue("111111");
+  createForm()
+  {
+    this.loginForm = this.fb.group({
+      email: ["", Validators.required],
+      password: ["", Validators.required],
+    });
+  }
+
+  onLogin()
+  {
+    this.spinner = true;
+    // this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value).then(userCredential =>
+    // {
+    //   if (this.verificarUsuarioTesting(userCredential.user))
+    //   {
+    //     return true;
+    //   }
+    //   if (userCredential.user.emailVerified)
+    //   {
+    //     this.onLoginSuccess(userCredential.user);
+    //   }
+    //   else
+    //   {
+    //     this.bootColorAlert = "danger";
+    //     this.mensaje = "Verifique su email";
+    //     this.spinner = false;
+    //     this.submitted = true;
+    //   }
+    // }).catch(error =>
+    // {
+    //   this.bootColorAlert = "danger"
+    //   this.cargarMensajeErrorAuth(error);
+    //   this.submitted = true;
+    //   this.spinner = false;
+    //   console.log('Error: ', error)
+    // })
+  }
+  onLoginSuccess(user?: User)
+  {
+    // this.user$ = this.authService.user$.subscribe(value =>
+    // {
+    //   if ((value as Professional).usertype == "professional" && !(value as Professional).approved)
+    //   {
+    //     this.bootColorAlert = "danger"
+    //     this.mensaje = "Espere ser aprobado por un Administrador";
+    //     this.submitted = true;
+    //     this.spinner = false;
+    //   } else
+    //   {
+    //     this.bootColorAlert = "success"
+    //     this.mensaje = "Verificado✓";
+    //     this.submitted = true;
+    //     setTimeout(t =>
+    //     {
+    //       this.router.navigate(['/home']);
+    //     }, 2000)
+    //   }
+    // })
+
+  }
+  verificarUsuarioTesting(user: User)
+  {
+    switch (user.email)
+    {
+      case "paciente@gonzales.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      case "paciente@diego.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      case "paciente@carlitos.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      case "medico@valderrama.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      case "medico2@delaolla.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      case "administrador@dario.com":
+        this.onLoginSuccess();
+        return true;
+        break;
+      default: return false;
+        break;
     }
   }
+
+  cargarMensajeErrorAuth(error:any)
+  {
+    switch (error.code)
+    {
+      case "auth/user-not-found":
+        this.mensaje = "Usuario no registrado";
+        break;
+      case "auth/wrong-password":
+        this.mensaje = "Contraseña incorrecta";
+        break;
+      case "auth/invalid-email":
+        this.mensaje = "email invalido";
+        break;
+      case "auth/email-already-exists":
+        this.mensaje = "El email ya existe";/* (para singin) */
+        break;
+      default: this.mensaje = "email invalido";
+        break;
+    }
+  }
+
+  enterAsClient()
+  {
+    this.loginForm.controls['email'].setValue('paciente@gonzales.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+  enterAsClient1()
+  {
+    this.loginForm.controls['email'].setValue('paciente@diego.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+  enterAsClient2()
+  {
+    this.loginForm.controls['email'].setValue('paciente@carlitos.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+  enterAsProfessional()
+  {
+    this.loginForm.controls['email'].setValue('medico@valderrama.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+  enterAsProfessional1()
+  {
+    this.loginForm.controls['email'].setValue('Medico2@Delaolla.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+  enterAsAdministrator()
+  {
+    this.loginForm.controls['email'].setValue('administrador@dario.com');
+    this.loginForm.controls['password'].setValue('111111');
+  }
+
+  navigate(route:any){
+    this.router.navigate(route);
+  }
+
 
 }

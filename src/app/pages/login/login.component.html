@@ -1,25 +1,62 @@
 <div class="text-center body">
-    <form class="form-signin" [formGroup]="loginForm">
-        <img class="mb-4" src="/images/mario.png" alt="" width="150" height="150">
-        <h1 class="h3 mb-3 font-weight-normal" style="font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Sala de
-            Juegos</h1>
-        <label for="inputEmail" class="sr-only">Correo</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Correo" name="email" required autofocus
-            formControlName="email">
-        <label for="inputPassword" class="sr-only">Contraseña</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" name="password" required
-            formControlName="password">
-        <!-- <app-alert [color]="colorAlert" [mensaje]="mensaje" *ngIf="submitted"></app-alert> -->
-         <app-alert [color]="colorAlert" [mensaje]="mensaje" *ngIf="submitted == true"></app-alert>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onLogin()"
-            [disabled]="loginForm.invalid">Entrar</button>
+    <div class="container">
+        <div class="d-flex">
+            <div class="p-2 flex-grow-1">
+                <form class="form-signin" [formGroup]="loginForm">
+                    <img class="mb-4" src="images/medialSign.svg" alt="" width="150" height="150">
+                    <h1 class="h3 mb-3 font-weight-normal">Clinica Online</h1>
+                    <label for="inputEmail" class="sr-only">Correo</label>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Correo" name="email" required
+                        autofocus formControlName="email">
+                    <label for="inputPassword" class="sr-only">Contraseña</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña"
+                        name="password" required formControlName="password">
 
-        <button class="btn btn-sm btn-secondary btn-block" type="submit" routerLink="/Registro">Registrarme</button>
+                    <button class="btn btn-sm btn-primary btn-block" type="submit" *ngIf="!testing"
+                        (click)="testing=!testing">Mostrar usuarios testing</button>
 
-        <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit" (click)="entrarComoAnonimo()">Entrar como
-            anonimo</button> -->
-        <button class="btn btn-sm btn-secondary btn-block" type="submit" (click)="entrarComoAdmin()">Entrar como
-            admin</button>
-        <p class="mt-5 mb-3 text-muted">&copy; Federico Vera</p>
-    </form>
+                    <app-alert [mensaje]="mensaje" [color]="bootColorAlert" *ngIf="submitted"></app-alert>
+
+                    <button class="btn btn-lg btn-primary btn-block" *ngIf="!spinner" type="submit" (click)="onLogin()"
+                        [disabled]="loginForm.invalid">Entrar</button>
+                    <div class="spinner-grow text-warning" role="status" *ngIf="spinner">
+                        <!-- *ngIf="spinner else alert  <ng-template #alert>-->
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                    <button class="btn btn-sm btn-secondary btn-block" type="submit"
+                        routerLink="/signup">Registrarme</button>
+                    <p class="mt-5 mb-3 text-muted">&copy; Federico Vera</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div style="position: relative; top:-5rem" *ngIf=" testing">
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient()">
+        <div class="mdc-fab__ripple"><img [src]="patientTesting?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
+        </div>
+        <!-- <span class="mdc-fab__icon material-icons">favorite</span> -->
+    </button>
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient1()">
+        <div class="mdc-fab__ripple"><img [src]="patientTesting2?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
+        </div>
+    </button>
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient2()">
+        <div class="mdc-fab__ripple"><img [src]="patientTesting3?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
+        </div>
+    </button>
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional()">
+        <div class="mdc-fab__ripple"><img [src]="professionalTesting?.photos?.[0]" alt=""
+                style="width: 5rem; height: 100%;"></div>
+    </button>
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional1()">
+        <div class="mdc-fab__ripple"><img [src]="professionalTesting2?.photos?.[0]" alt=""
+                style="width: 5rem; height: 100%;"></div>
+    </button>
+    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsAdministrator()">
+        <div class="mdc-fab__ripple"><img [src]="administratorTesting?.photos?.[0]" alt=""
+                style="width: 5rem; height: 100%;"></div>
+    </button>
 </div>

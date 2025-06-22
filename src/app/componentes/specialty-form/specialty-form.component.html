@@ -1,0 +1,32 @@
+<form class="needs-validation" [formGroup]="specialtyForm" novalidate>
+
+    <div class="col-md-6 mb-3">
+        <label for="livespan">Duración (min)</label>
+        <input type="text" class="form-control" id="livespan" formControlName="duration" placeholder="Promedio de turno"
+            value="" required>
+        <div *ngIf="specialtyForm.controls['duration'].invalid && (specialtyForm.controls['duration'].dirty || specialtyForm.controls['duration'].touched)"
+            class="alert alert-danger">
+            <div *ngIf="specialtyForm.controls['duration'].errors && specialtyForm.controls['duration'].errors['required']">
+                Duracion es requerida.
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="livespan">Nombre</label>
+        <input type="text" class="form-control" id="livespan" formControlName="specialty"
+            placeholder="Promedio de turno" value="" required>
+        <div *ngIf="specialtyForm.controls['specialty'].invalid && (specialtyForm.controls['specialty'].dirty || specialtyForm.controls['specialty'].touched)"
+            class="alert alert-danger">
+            <div *ngIf="specialtyForm.controls['specialty'].errors && specialtyForm.controls['specialty'].errors['required']">
+                Especialidad requerida.
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="addSpecialty()"
+        [disabled]="specialtyForm.invalid">Agregar Especialidad </button>
+    <div *ngIf="spinner" class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Guardando...</span>
+    </div>
+    <app-alert *ngIf="mostrarMensaje" mensaje="Especialidad Agregada" color="danger" (dismiss)="resetForm()">
+    </app-alert>
+</form>

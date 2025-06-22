@@ -1,1 +1,168 @@
-<p>form-profesional works!</p>
+<div class="container mt-5">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="images/medialSign.svg" alt="" width="72" height="72">
+        <h2>Clinica Online</h2>
+        <p class="lead">Rellene el formulario para registrar un profesional.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <h4 class="mb-3">Datos Necesarios</h4>
+            <form class="needs-validation" [formGroup]="professionalForm" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">Nombre</label>
+                        <input type="text" class="form-control" id="firstName" formControlName="name"
+                            placeholder="Nombre" value="" required>
+                        <div *ngIf="professionalForm.controls['name'].invalid && (professionalForm.controls['name'].dirty || professionalForm.controls['name'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="professionalForm.controls['name'].errors && professionalForm.controls['name'].errors['required']">
+                                Nombre es requerido.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Apellido</label>
+                        <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                            placeholder="Apellido" value="" required>
+                        <div *ngIf="professionalForm.controls['lastName'].invalid && (professionalForm.controls['lastName'].dirty || professionalForm.controls['lastName'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="professionalForm.controls['lastName'].errors?.['required']">
+                                Apellido es requerido.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="edad">Edad</label>
+                        <input type="number" class="form-control" id="edad" formControlName="age" placeholder="Edad"
+                            min="18" max="99" placeholder="Edad" required>
+                        <div *ngIf="professionalForm.controls['age'].invalid && (professionalForm.controls['age'].dirty || professionalForm.controls['age'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="professionalForm.controls['age'].errors?.['required']">
+                                Edad es requerida.
+                            </div>
+                            <div *ngIf="professionalForm.controls['age'].errors?.['min']">
+                                Edad debe ser mayor a 18.
+                            </div>
+                            <div *ngIf="professionalForm.controls['age'].errors?.['max']">
+                                Edad debe ser menor a 99.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="dni">DNI</label>
+                        <input type="text" class="form-control" id="dni" formControlName="dni" placeholder="DNI"
+                            value="" required>
+                        <div *ngIf="professionalForm.controls['dni'].invalid && (professionalForm.controls['dni'].dirty || professionalForm.controls['dni'].touched)"
+                            class="alert alert-danger">
+                            <div *ngIf="professionalForm.controls['dni'].errors?.['required']">
+                                DNI es requerido.
+                            </div>
+                            <div *ngIf="professionalForm.controls['dni'].errors?.['minlength']">
+                                DNI debe tener al menos 7 caracteres.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email">Correo <span class="text-muted"></span></label>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                        placeholder="minombre@ejemplo.com">
+                    <div *ngIf="professionalForm.controls['email'].invalid && (professionalForm.controls['email'].dirty || professionalForm.controls['email'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="professionalForm.controls['email'].errors?.['required']">
+                            Email es requerido.
+                        </div>
+                        <div *ngIf="professionalForm.controls['email'].errors?.['email']">
+                            Email invalido.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address">Contraseña</label>
+                    <input type="password" class="form-control" id="address" formControlName="password"
+                        placeholder="Contraseña" required>
+                    <div *ngIf="professionalForm.controls['password'].invalid && (professionalForm.controls['password'].dirty || professionalForm.controls['password'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="professionalForm.controls['password'].errors?.['required']">
+                            Contraseña requerida.
+                        </div>
+                        <div *ngIf="professionalForm.controls['password'].errors?.['minlength']">
+                            La contraseña debe contener al menos 6 caracteres.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <div class="form-group">
+                            <label for="fotos">Imagen de perfil</label>
+                            <input type="file" class="form-control-file" id="fotos" (change)="handlePhoto1($event)">
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label *ngIf="!specialtysChoosen"> <b>Elija su/s especialidad/es :</b></label>
+                        <div class="form-group" *ngIf="specialtysChoosen">
+                            <label> <b>Epecialidad/es elegida/s :</b> </label>
+                            <ul class="list-group" *ngFor="let specialty of specialtysChoosen; let indice=index">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{specialty.specialty}}
+
+                                    <span class="badge badge-primary badge-pill"> <i class="fa fa-trash"
+                                            aria-hidden="true" (click)="deleteSpecialty(indice)"></i></span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <app-specialty-list [specialtys]="specialtys" (chooseSpecialty)="onChooseSpecialty($event)">
+                </app-specialty-list>
+
+                <label for="newSpecialty"><b>Agregar nueva especialidad</b></label> &nbsp;
+                <button id="newSpecialty" *ngIf="!showSpecialtyForm" class="btn btn-outline-success"
+                    (click)="showSpecialtyForm = !showSpecialtyForm">➕</button>
+                <button id="newSpecialty" *ngIf="showSpecialtyForm" class="btn btn-outline-success"
+                    (click)="showSpecialtyForm = !showSpecialtyForm">➖</button>
+                <div class="row" *ngIf="showSpecialtyForm">
+                    <div class="col-md-6 mb-3">
+                        <app-specialty-form (specialty)="onChooseSpecialty($event)"></app-specialty-form>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <!-- <re-captcha (resolved)="resolved($event)" formControlName="recaptchaReactive"
+                    siteKey="6LeKd98ZAAAAANCIjc5-WVR4PiaFaeLn9J1uh9bm" required>
+                </re-captcha> -->
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="professionalForm.invalid"
+                    (click)="onSubmit()">Registrar
+                    Profesional</button>
+                <div class="container" *ngIf="registered">
+                    <app-alert
+                        mensaje="Profesional Registrado correctamente. Verifique su casilla de correo y aguarde a ser aprobado por un Administrador"
+                        color="warning" (dismiss)="navigate()">
+                    </app-alert>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; Federico Vera</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+    </footer>
+</div>
