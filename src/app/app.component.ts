@@ -26,7 +26,7 @@ export class AppComponent {
     // this.getUserEmail();
     // console.log('Current URL:', this.router.url);
     // Check if the current URL is '/login' or '/Registro'
-    return this.router.url === '/Login' || this.router.url === '/Registro';
+    return this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/bienvenido';
   }
 
 

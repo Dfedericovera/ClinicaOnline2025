@@ -1,8 +1,8 @@
 export interface PostI {
-    contenido: string;
-    usuario: string;
-    timestamp: number;
+    titlePost: string;
+    contentPost: string;
     imagePost?: any;
     id?: string;
+    tagsPost: string;
     fileRef?: string;
   }
