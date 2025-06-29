@@ -16,7 +16,8 @@
                             placeholder="Nombre" value="" required>
                         <div *ngIf="patientForm.controls['name'].invalid && (patientForm.controls['name'].dirty || patientForm.controls['name'].touched)"
                             class="alert alert-danger">
-                            <div *ngIf="patientForm.controls['name'].errors && patientForm.controls['name'].errors['required']">
+                            <div
+                                *ngIf="patientForm.controls['name'].errors && patientForm.controls['name'].errors['required']">
                                 Nombre es requerido.
                             </div>
                         </div>
@@ -27,7 +28,8 @@
                             placeholder="Apellido" value="" required>
                         <div *ngIf="patientForm.controls['lastName'].invalid && (patientForm.controls['lastName'].dirty || patientForm.controls['lastName'].touched)"
                             class="alert alert-danger">
-                            <div *ngIf="patientForm.controls['lastName'].errors && patientForm.controls['lastName'].errors['required']">
+                            <div
+                                *ngIf="patientForm.controls['lastName'].errors && patientForm.controls['lastName'].errors['required']">
                                 Apellido es requerido.
                             </div>
                         </div>
@@ -41,10 +43,12 @@
                             minlength="7" value="" required>
                         <div *ngIf="patientForm.controls['dni'].invalid && (patientForm.controls['dni'].dirty || patientForm.controls['dni'].touched)"
                             class="alert alert-danger">
-                            <div *ngIf="patientForm.controls['dni'].errors && patientForm.controls['dni'].errors['required']">
+                            <div
+                                *ngIf="patientForm.controls['dni'].errors && patientForm.controls['dni'].errors['required']">
                                 DNI es requerido.
                             </div>
-                            <div *ngIf="patientForm.controls['dni'].errors && patientForm.controls['dni'].errors['minlength']">
+                            <div
+                                *ngIf="patientForm.controls['dni'].errors && patientForm.controls['dni'].errors['minlength']">
                                 DNI debe tener al menos 7 digitos
                             </div>
                         </div>
@@ -55,13 +59,16 @@
                             min="2" max="99" value="" required>
                         <div *ngIf="patientForm.controls['age'].invalid && (patientForm.controls['age'].dirty || patientForm.controls['age'].touched)"
                             class="alert alert-danger">
-                            <div *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['required']">
+                            <div
+                                *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['required']">
                                 Edad es requerida.
                             </div>
-                            <div *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['min']">
+                            <div
+                                *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['min']">
                                 la edad debe ser mayor a 1 y menor a 110.
                             </div>
-                            <div *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['max']">
+                            <div
+                                *ngIf="patientForm.controls['age'].errors && patientForm.controls['age'].errors['max']">
                                 la edad debe ser mayor a 1 y menor a 110.
                             </div>
                         </div>
@@ -74,7 +81,8 @@
                         placeholder="Obra Social">
                     <div *ngIf="patientForm.controls['obraSocial'].invalid && (patientForm.controls['obraSocial'].dirty || patientForm.controls['obraSocial'].touched)"
                         class="alert alert-danger">
-                        <div *ngIf="patientForm.controls['obraSocial'].errors && patientForm.controls['obraSocial'].errors['required']">
+                        <div
+                            *ngIf="patientForm.controls['obraSocial'].errors && patientForm.controls['obraSocial'].errors['required']">
                             Obra Social es requerida.
                         </div>
                     </div>
@@ -86,7 +94,8 @@
                         placeholder="minombre@ejemplo.com">
                     <div *ngIf="patientForm.controls['email'].invalid && (patientForm.controls['email'].dirty || patientForm.controls['email'].touched)"
                         class="alert alert-danger">
-                        <div *ngIf="patientForm.controls['email'].errors && patientForm.controls['email'].errors['required']">
+                        <div
+                            *ngIf="patientForm.controls['email'].errors && patientForm.controls['email'].errors['required']">
                             Email es requerido.
                         </div>
                     </div>
@@ -97,7 +106,8 @@
                         placeholder="Contraseña" required>
                     <div *ngIf="patientForm.controls['password'].invalid && (patientForm.controls['password'].dirty || patientForm.controls['password'].touched)"
                         class="alert alert-danger">
-                        <div *ngIf="patientForm.controls['password'].errors && patientForm.controls['password'].errors['required']">
+                        <div
+                            *ngIf="patientForm.controls['password'].errors && patientForm.controls['password'].errors['required']">
                             Contraseña es requerida.
                         </div>
                     </div>
@@ -107,6 +117,13 @@
                         <div class="form-group">
                             <label for="fotos">Foto 1</label>
                             <input type="file" class="form-control-file" (change)="handlePhoto1($event)">
+                            <div *ngIf="patientForm.controls['photo1'].invalid"
+                                class="alert alert-danger">
+                                <div
+                                    *ngIf="patientForm.controls['photo1'].errors && patientForm.controls['photo1'].errors['required']">
+                                    Foto 1 es requerida.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,6 +132,13 @@
                         <div class="form-group">
                             <label for="fotos">Foto 2</label>
                             <input type="file" class="form-control-file" (change)="handlePhoto2($event)">
+                            <div *ngIf="patientForm.controls['photo2'].invalid"
+                                class="alert alert-danger">
+                                <div
+                                    *ngIf="patientForm.controls['photo2'].errors && patientForm.controls['photo2'].errors['required']">
+                                    Foto 2 es requerida.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

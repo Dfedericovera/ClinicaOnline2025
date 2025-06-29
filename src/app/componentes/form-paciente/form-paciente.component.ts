@@ -9,108 +9,103 @@ import { UserType } from '../../enumerados/userType';
 
 @Component({
   selector: 'app-form-paciente',
-  imports: [AlertComponent,CommonModule,ReactiveFormsModule],
+  imports: [AlertComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './form-paciente.component.html',
   styleUrl: './form-paciente.component.css'
 })
 export class FormPacienteComponent {
-  
+
   patientForm: FormGroup = new FormGroup({});
-  photo1: FileI | null = null;
-  photo2: FileI | null = null;
-  photos: Array<FileI> = new Array();
+  // photo1: File | null = null;
+  // photo2: File | null = null;
+  photos: Array<File> = new Array();
   registered: boolean = false;
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    // private patientService: PatientService,
-    private router:Router
-  )
-  {
+    private router: Router
+  ) {
     this.createForm();
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
   }
 
-  createForm()
-  {
+  createForm() {
     this.patientForm = this.fb.group({
       name: ["", Validators.required],
       lastName: ["", Validators.required],
-      age: ["", [Validators.required,Validators.min(1),Validators.max(110)]],
+      age: ["", [Validators.required, Validators.min(1), Validators.max(110)]],
       dni: ["", Validators.required],
       obraSocial: ["", Validators.required],
       email: ["", Validators.required],
       password: ["", Validators.required],
-      usertype:[UserType.PATIENT],
-      id:[""],
-      recaptchaReactive: ["", Validators.required],
+      usertype: [UserType.PATIENT],
+      photo1: ["", Validators.required],
+      photo2: ["", Validators.required],
+      id: [""],
+      // recaptchaReactive: ["", Validators.required],
     });
   }
 
-  onSubmit()
-  {
-    try
-    {
+  async onSubmit() {
+    try {
       /* console.log(this.patientForm.value); */
-      this.assignPhotos();
-      // this.authService.register(this.patientForm.controls.email.value, this.patientForm.controls.password.value).then(user =>
-      // {
-      //   if (user)
-      //   {
-      //     this.patientForm.controls.id.setValue(user.uid);
-      //     this.patientForm.removeControl("password");
-      //     this.patientService.createPatient(this.patientForm.value, this.photos).then(patient =>
-      //     {
-      //       console.log('Created patient', patient);
-      //       user.updateProfile({
-      //         displayName: patient.name,
-      //       }).then(() =>
-      //       {
-      //         console.log('Now Verify your email to login.');
-      //         this.registered = true;
-      //       })
-      //     });
-      //     this.patientForm.addControl("password",this.fb.control({password: "111111"}))
-      //   }
-      // }).catch(error => { console.log('Error', error); });
+      var pathPhoto1 = '';
+      var pathPhoto2 = '';
+      await this.authService.subirImagenUsuario(this.patientForm.controls['photo1'].value, `${this.patientForm.controls['dni'].value}/photo1`).then((response) => {
+        if (response) {
+          console.log('Foto 1 subida correctamente:', response);
+          this.authService.getImagenDeUsuario(response).then((res) => {
+            pathPhoto1 = res;
+          });
+        }
+      });
+      await this.authService.subirImagenUsuario(this.patientForm.controls['photo2'].value, `${this.patientForm.controls['dni'].value}/photo2`).then((response) => {
+        if (response) {
+          console.log('Foto 2 subida correctamente:', response);
+          this.authService.getImagenDeUsuario(response).then((res) => {
+            pathPhoto2 = res;
+          });
+        }
+      });
 
-    } catch (error)
-    {
+      this.authService.register(this.patientForm.controls['email'].value, this.patientForm.controls['password'].value).then(user => {
+        if (user) {
+          console.log('Usuario registrado correctamente:', user);
+          this.authService.registrarDatosusuario({
+            nombre: this.patientForm.controls['name'].value,
+            apellido: this.patientForm.controls['lastName'].value,
+            edad: this.patientForm.controls['age'].value,
+            dni: this.patientForm.controls['dni'].value,
+            obraSocial: this.patientForm.controls['obraSocial'].value,
+            role: this.patientForm.controls['usertype'].value,
+            Foto1: pathPhoto1,
+            Foto2: pathPhoto2,
+            id: user.user?.id,
+          });
+        }
+      });
+
+    } catch (error) {
       console.error(error);
     }
   }
 
-  handlePhoto1(file: any)
-  {
-    this.photo1 = file.target.files[0];
+  handlePhoto1(file: any) {
+    this.patientForm.controls['photo1'].setValue(file.target.files[0]);
   }
 
-  handlePhoto2(file: any)
-  {
-    this.photo2 = file.target.files[0];
+  handlePhoto2(file: any) {
+    this.patientForm.controls['photo2'].setValue(file.target.files[0]);
   }
 
-  assignPhotos()
-  {
-    if (this.photo1)
-    {
-      this.photos.push(this.photo1);
-    }
-    if(this.photo2){
-      this.photos.push(this.photo2);
-    }
-  }
-
-  navigate(){
+  navigate() {
     this.router.navigate(['/login']);
   }
 
-  resolved(captchaResponse: any)
-  {
+  resolved(captchaResponse: any) {
     /* console.log(`Resolved response token: ${captchaResponse}`); */
   }
 

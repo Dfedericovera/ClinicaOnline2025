@@ -13,7 +13,7 @@ import { User } from '@supabase/supabase-js';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule, AlertComponent,RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -41,8 +41,7 @@ export class LoginComponent {
     // private patientService: PatientService,
     // private professionalService: ProfessionalService,
     // private administratorService: AdministratorService
-  )
-  {
+  ) {
     this.createForm();
     this.condicion = false;
     this.testing = false;
@@ -50,19 +49,17 @@ export class LoginComponent {
     this.submitted = false;
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.loadTesters();
   }
 
-  ngOnDestroy(){
-    if(this.user$){
+  ngOnDestroy() {
+    if (this.user$) {
       this.user$.unsubscribe();
     }
-    
+
   }
-  loadTesters()
-  {
+  loadTesters() {
     // this.patientService.getPatientById("cEewD51RQsYrvaYHQ3eRAzkUHDJ3").then(testintgPatient =>
     // {
     //   this.patientTesting = testintgPatient;
@@ -89,17 +86,38 @@ export class LoginComponent {
     // })
   }
 
-  createForm()
-  {
+  createForm() {
     this.loginForm = this.fb.group({
       email: ["", Validators.required],
       password: ["", Validators.required],
     });
   }
 
-  onLogin()
-  {
+  onLogin() {
     this.spinner = true;
+    console.log('Login', this.loginForm.value);
+
+    this.authService.login(
+      this.loginForm.controls['email'].value,
+      this.loginForm.controls['password'].value
+    ).then((response) => {
+      console.log('Login successful', response);
+      this.spinner = false;
+      this.bootColorAlert = "alert-success"
+      this.mensaje = "Verificado✓";
+      this.submitted = true;
+      setTimeout(() => {
+        this.router.navigate(['/Home']);
+      }, 2000)
+
+    }).catch((error) => {
+      this.spinner = false;
+      console.error('Login failed', error);
+      this.bootColorAlert = "alert-danger"
+      this.mensaje = error.message;
+      this.submitted = true;
+      console.log('Usuario no registrado', error)
+    });
     // this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value).then(userCredential =>
     // {
     //   if (this.verificarUsuarioTesting(userCredential.user))
@@ -126,8 +144,7 @@ export class LoginComponent {
     //   console.log('Error: ', error)
     // })
   }
-  onLoginSuccess(user?: User)
-  {
+  onLoginSuccess(user?: User) {
     // this.user$ = this.authService.user$.subscribe(value =>
     // {
     //   if ((value as Professional).usertype == "professional" && !(value as Professional).approved)
@@ -149,31 +166,29 @@ export class LoginComponent {
     // })
 
   }
-  verificarUsuarioTesting(user: User)
-  {
-    switch (user.email)
-    {
-      case "paciente@gonzales.com":
+  verificarUsuarioTesting(user: User) {
+    switch (user.email) {
+      case "pacientegonzales@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
-      case "paciente@diego.com":
+      case "pacientediego@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
-      case "paciente@carlitos.com":
+      case "pacientecarlitos@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
-      case "medico@valderrama.com":
+      case "medicovalderrama@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
-      case "medico2@delaolla.com":
+      case "medico2delaolla@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
-      case "administrador@dario.com":
+      case "administratordario@gmail.com":
         this.onLoginSuccess();
         return true;
         break;
@@ -182,10 +197,8 @@ export class LoginComponent {
     }
   }
 
-  cargarMensajeErrorAuth(error:any)
-  {
-    switch (error.code)
-    {
+  cargarMensajeErrorAuth(error: any) {
+    switch (error.code) {
       case "auth/user-not-found":
         this.mensaje = "Usuario no registrado";
         break;
@@ -203,38 +216,32 @@ export class LoginComponent {
     }
   }
 
-  enterAsClient()
-  {
-    this.loginForm.controls['email'].setValue('paciente@gonzales.com');
+  enterAsClient() {
+    this.loginForm.controls['email'].setValue('pacientegonzales@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
-  enterAsClient1()
-  {
-    this.loginForm.controls['email'].setValue('paciente@diego.com');
+  enterAsClient1() {
+    this.loginForm.controls['email'].setValue('pacientediego@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
-  enterAsClient2()
-  {
-    this.loginForm.controls['email'].setValue('paciente@carlitos.com');
+  enterAsClient2() {
+    this.loginForm.controls['email'].setValue('pacientecarlitos@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
-  enterAsProfessional()
-  {
-    this.loginForm.controls['email'].setValue('medico@valderrama.com');
+  enterAsProfessional() {
+    this.loginForm.controls['email'].setValue('medicovalderrama@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
-  enterAsProfessional1()
-  {
-    this.loginForm.controls['email'].setValue('Medico2@Delaolla.com');
+  enterAsProfessional1() {
+    this.loginForm.controls['email'].setValue('medico2delaolla@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
-  enterAsAdministrator()
-  {
-    this.loginForm.controls['email'].setValue('administrador@dario.com');
+  enterAsAdministrator() {
+    this.loginForm.controls['email'].setValue('administratordario@gmail.com');
     this.loginForm.controls['password'].setValue('111111');
   }
 
-  navigate(route:any){
+  navigate(route: any) {
     this.router.navigate(route);
   }
 

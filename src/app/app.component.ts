@@ -12,7 +12,7 @@ import { AuthService } from './services/auth-service.service';
 })
 export class AppComponent {
 
-  title = 'SalaDeJuegosVera';
+  title = 'clinica-online-2025';
   email: any;
 
 

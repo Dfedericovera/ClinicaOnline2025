@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SalaDeJuegosVera": {
+    "clinica-online-2025": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/sala-de-juegos-vera",
+            "outputPath": "dist/clinica-online-2025",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SalaDeJuegosVera:build:production"
+              "buildTarget": "clinica-online-2025:build:production"
             },
             "development": {
-              "buildTarget": "SalaDeJuegosVera:build:development"
+              "buildTarget": "clinica-online-2025:build:development"
             }
           },
           "defaultConfiguration": "development"

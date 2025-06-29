@@ -69,6 +69,69 @@ export class AuthService {
     return data;
   }
 
+  async registrarDatosusuario(datos: any) {
+    // Grabar los datos del usuario en la base de datos de supabase llamada Usuarios
+    // console.log(datos);
+    
+    var respuesta = await this.supabase
+      .from('Usuarios')
+      .insert([
+        {
+          nombre: datos.nombre,
+          apellido: datos.apellido,
+          edad: datos.edad,
+          dni: datos.dni,
+          obraSocial: datos.obraSocial,
+          Foto1: datos.Foto1,
+          Foto2: datos.Foto2,
+          role: datos.role,
+          IdUsuario: datos.id, // Asegúrate de que 'id' es el ID del usuario autenticado
+        },
+      ]);
+
+      // console.log('Respuesta al registrar datos de usuario:', respuesta);
+      
+    // Ahora con datos.id puedo registrar las especialidades del profesional
+    if (datos.role === 'profesional') {
+      this.registrarEspecialidades(datos);
+    }
+
+  }
+
+
+
+  async registrarEspecialidades(datos: any) {
+    await this.supabase
+      .from('Especialidades')
+      .insert([
+        {
+          id_usuario: datos.id,
+          especialidad: datos.especialidad
+        }
+      ])
+      .select();
+  }
+
+  async subirImagenUsuario(file: File, userId: string): Promise<string> {
+    const filePath = `usuarios/${userId}/${file.name}`;
+    const { data, error } = await this.supabase.storage.from('imagenes').upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+    if (error) {
+      throw error;
+    } else if (data && data.path) {
+      return data.path;
+    } else {
+      throw new Error('Unknown error uploading image');
+    }
+  }
+
+  async getImagenDeUsuario(filePath: string){
+    return await this.supabase.storage.from('imagenes').getPublicUrl(filePath).data.publicUrl;
+  }
+
   async logout() {
     const { error } = await this.supabase.auth.signOut();
 

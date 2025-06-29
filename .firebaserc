@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sala-de-juegos-vera"
-  }
+    "default": "clinica-online-2025",
+    "clinica-online-2025": "sala-de-juegos-vera"
+  },
+  "targets": {},
+  "etags": {}
 }

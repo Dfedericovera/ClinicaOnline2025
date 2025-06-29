@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "dist/sala-de-juegos-vera/browser",
+    "site": "clinica-online-2025",
+    "public": "dist/clinica-online-2025/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
