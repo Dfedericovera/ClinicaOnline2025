@@ -114,10 +114,10 @@
                             <label> <b>Epecialidad/es elegida/s :</b> </label>
                             <ul class="list-group" *ngFor="let specialty of specialtysChoosen; let indice=index">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{specialty.specialty}}
+                                    {{specialty.Especialidad}}
 
-                                    <span class="badge badge-primary badge-pill"> <i class="fa fa-trash"
-                                            aria-hidden="true" (click)="deleteSpecialty(indice)"></i></span>
+                                    <span class="badge badge-primary badge-pill" style="cursor: pointer;" (click)="deleteSpecialty(indice)"> <i class="fa fa-trash"
+                                            aria-hidden="true" ></i></span>
                                 </li>
 
                             </ul>
@@ -135,7 +135,7 @@
                     (click)="showSpecialtyForm = !showSpecialtyForm">➖</button>
                 <div class="row" *ngIf="showSpecialtyForm">
                     <div class="col-md-6 mb-3">
-                        <app-specialty-form (specialty)="onChooseSpecialty($event)"></app-specialty-form>
+                        <app-specialty-form (specialty)="onChooseSpecialty($event)" ></app-specialty-form>
                     </div>
                 </div>
                 <hr class="mb-4">

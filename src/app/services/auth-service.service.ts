@@ -90,23 +90,15 @@ export class AuthService {
       ]);
 
       // console.log('Respuesta al registrar datos de usuario:', respuesta);
-      
-    // Ahora con datos.id puedo registrar las especialidades del profesional
-    if (datos.role === 'profesional') {
-      this.registrarEspecialidades(datos);
-    }
-
   }
 
-
-
-  async registrarEspecialidades(datos: any) {
+    async registrarEspecialidadesUsuario(datos: any) {
     await this.supabase
       .from('Especialidades')
       .insert([
         {
-          id_usuario: datos.id,
-          especialidad: datos.especialidad
+          IdUsuario: datos.id,
+          IdEspecialidad: datos.IdEspecialidad
         }
       ])
       .select();

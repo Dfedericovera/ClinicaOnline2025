@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth-service.service';
 import { Especialidad } from '../../clases/especialidad';
 import { SpecialtyListComponent } from "../specialty-list/specialty-list.component";
 import { SpecialtyFormComponent } from '../specialty-form/specialty-form.component';
+import { EspecialidadService } from '../../services/especialidad.service';
 
 @Component({
   selector: 'app-form-profesional',
@@ -19,38 +20,34 @@ import { SpecialtyFormComponent } from '../specialty-form/specialty-form.compone
 export class FormProfesionalComponent {
 
   professionalForm: FormGroup = new FormGroup({});
-  photo1: FileI | null = null;
-  photo2: FileI | null = null;
   photos: Array<FileI> = [];
   registered: boolean = false;
   specialtys: Especialidad[] = [];
   specialtysChoosen: Especialidad[] = [];
-  showSpecialtyForm:boolean = false;
+  showSpecialtyForm: boolean = false;
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    // private profesionalService: ProfessionalService,
     private router: Router,
-    // private specialtyService: SpecialtyService
-  )
-  {
+    private especialidadService: EspecialidadService
+  ) {
     this.showSpecialtyForm = false;
     this.registered = false;
     this.photos = new Array();
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.createForm();
-    // this.specialtyService.getSpecialtys().subscribe(specialtys =>
-    // {
-    //   this.specialtys = specialtys;
-    // })
+    this.especialidadService.getEspecialidades().then((posts: any) => {
+      console.log(posts);
+
+      this.specialtys = posts;
+    });
+
   }
 
-  createForm()
-  {
+  createForm() {
     this.professionalForm = this.fb.group({
       id: [""],
       name: ["", Validators.required],
@@ -61,112 +58,102 @@ export class FormProfesionalComponent {
       password: ["", [Validators.required, Validators.minLength(6)]],
       specialty: [Array, Validators.required],
       approved: [""],
-      usertype:[UserType.PROFESSIONAL],
+      usertype: [UserType.PROFESSIONAL],
       recaptchaReactive: ["", Validators.required],
+      photo1: ["", Validators.required],
+      photo2: ["", Validators.required],
     });
   }
 
-  verError(){
-    console.log(this.professionalForm );
-    
+  verError() {
+    console.log(this.professionalForm);
+
   }
 
-  onSubmit()
-  {
-    try
-    {
-      /* console.log(this.professionalForm.value); */
-      this.assignPhotos();
-      // this.authService.register(this.professionalForm.controls.email.value, this.professionalForm.controls.password.value).then(user =>
-      // {
-      //   if (user)
-      //   {
-      //     this.professionalForm.controls['id'].setValue(user.uid);
-      //     this.professionalForm.controls['approved'].setValue(false);
-      //     this.professionalForm.removeControl("password");
-      //     this.profesionalService.createProfessional(this.professionalForm.value, this.photos).then(patient =>
-      //     {
-      //       console.log('Professional Created', patient);
-      //       user.updateProfile({
-      //         displayName: patient.name,
-      //       }).then(() =>
-      //       {
-      //         console.log('Now Verify your email to login.');
-      //         this.registered = true;
-      //       })
-      //     });
-      //     this.professionalForm.addControl("password",this.fb.control({password: "111111"}))
-      //   }
-      // }).catch(error => { console.log('Error', error); });
+  async onSubmit() {
+    try {
+      var pathPhoto1 = '';
+      await this.authService.subirImagenUsuario(this.professionalForm.controls['photo1'].value, `${this.professionalForm.controls['dni'].value}/photo1`).then((response) => {
+        if (response) {
+          console.log('Foto 1 subida correctamente:', response);
+          this.authService.getImagenDeUsuario(response).then((res) => {
+            pathPhoto1 = res;
+          });
+        }
+      });
 
-    } catch (error)
-    {
+      this.authService.register(this.professionalForm.controls['email'].value, this.professionalForm.controls['password'].value).then(user => {
+        if (user) {
+          console.log('Usuario registrado correctamente:', user);
+          this.authService.registrarDatosusuario({
+            nombre: this.professionalForm.controls['name'].value,
+            apellido: this.professionalForm.controls['lastName'].value,
+            edad: this.professionalForm.controls['age'].value,
+            dni: this.professionalForm.controls['dni'].value,
+            role: this.professionalForm.controls['usertype'].value,
+            Foto1: pathPhoto1,
+            id: user.user?.id,
+          });
+          this.specialtysChoosen.forEach(especialidad => {
+            console.log('Especialidad seleccionada:', especialidad);
+            this.authService.registrarEspecialidadesUsuario({
+              IdUsuario: user.user?.id,
+              IdEspecialidad: especialidad.id
+            });
+          });
+
+          this.registered = true;
+        }
+      });
+
+    } catch (error) {
       console.error(error);
     }
   }
 
-  handlePhoto1(file: any)
-  {
-    this.photo1 = file.target.files[0];
+  handlePhoto1(file: any) {
+    this.professionalForm.controls['photo1'].setValue(file.target.files[0]);
   }
 
-  handlePhoto2(file: any)
-  {
-    this.photo2 = file.target.files[0];
+  handlePhoto2(file: any) {
+    this.professionalForm.controls['photo2'].setValue(file.target.files[0]);
   }
 
-  assignPhotos()
-  {
-    if (this.photo1)
-    {
-      this.photos.push(this.photo1);
-    }/* 
-    if(this.photo2){
-      this.photos.push(this.photo2);
-    } */
-  }
-
-  navigate()
-  {
+  navigate() {
     this.router.navigate(['/login']);
   }
 
-  onChooseSpecialty(specialty: Especialidad)
-  {
-    if (!this.specialtysChoosen)
-    {
+  onChooseSpecialty(specialty: Especialidad) {
+    if (!this.specialtysChoosen) {
       this.specialtysChoosen = [];
       this.specialtysChoosen.push(specialty);
       this.professionalForm.controls['specialty'].setValue(this.specialtysChoosen);
       console.log(specialty);
     }
-    else
-    {
+    else {
       let isAlreadyChoosen = false;
-      this.specialtysChoosen.forEach(specialtyChoosen =>
-      {
-        if (specialty.specialty == specialtyChoosen.specialty)
-        {
+      this.specialtysChoosen.forEach(specialtyChoosen => {
+        if (specialty.Especialidad == specialtyChoosen.Especialidad) {
           isAlreadyChoosen = true;
         }
       })
-      if (!isAlreadyChoosen)
-      {
+      if (!isAlreadyChoosen) {
         this.specialtysChoosen.push(specialty);
         this.professionalForm.controls['specialty'].setValue(this.specialtysChoosen);
         console.log(specialty);
       }
     }
+    this.especialidadService.getEspecialidades().then((posts: any) => {
+      this.specialtys = posts;
+    });
 
 
   }
 
-  deleteSpecialty(index:any)
-  {
-    this.specialtysChoosen.splice(index,1);
+  deleteSpecialty(index: any) {
+    this.specialtysChoosen.splice(index, 1);
   }
-  resolved(captchaResponse: any)
-  {
+  resolved(captchaResponse: any) {
     /* console.log(`Resolved response token: ${captchaResponse}`); */
   }
 }

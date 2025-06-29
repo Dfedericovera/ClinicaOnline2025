@@ -74,7 +74,7 @@ export class FormPacienteComponent {
       this.authService.register(this.patientForm.controls['email'].value, this.patientForm.controls['password'].value).then(user => {
         if (user) {
           console.log('Usuario registrado correctamente:', user);
-          this.authService.registrarDatosusuario({
+           this.authService.registrarDatosusuario({
             nombre: this.patientForm.controls['name'].value,
             apellido: this.patientForm.controls['lastName'].value,
             edad: this.patientForm.controls['age'].value,
@@ -85,6 +85,7 @@ export class FormPacienteComponent {
             Foto2: pathPhoto2,
             id: user.user?.id,
           });
+          this.registered = true;
         }
       });
 

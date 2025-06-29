@@ -3,7 +3,7 @@ import { DisponibilidadHoraria } from "../interface/disponibilidad-horaria";
 export class Especialidad{
 
     id:string = "";
-    specialty:string = "";
+    Especialidad:string = "";
     duration:number = 0;
     public disponibilidadHoraria:DisponibilidadHoraria | undefined;
 
