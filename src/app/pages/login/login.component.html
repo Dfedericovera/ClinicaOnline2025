@@ -2,9 +2,42 @@
     <div class="container">
         <div class="d-flex">
             <div class="p-2 flex-grow-1">
+                <div style="position: relative; top: 0rem" *ngIf=" testing">
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient()">
+                        <div class="mdc-fab__ripple"><img [src]="patientTesting.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;">
+                        </div>
+                        <!-- <span class="mdc-fab__icon material-icons">favorite</span> -->
+                    </button>
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient1()">
+                        <div class="mdc-fab__ripple"><img [src]="patientTesting2.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;">
+                        </div>
+                    </button>
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient2()">
+                        <div class="mdc-fab__ripple"><img [src]="patientTesting3.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;">
+                        </div>
+                    </button>
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional()">
+                        <div class="mdc-fab__ripple"><img [src]="professionalTesting?.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;"></div>
+                    </button>
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional1()">
+                        <div class="mdc-fab__ripple"><img [src]="professionalTesting2?.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;"></div>
+                    </button>
+                    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsAdministrator()">
+                        <div class="mdc-fab__ripple"><img [src]="administratorTesting?.Foto1" alt=""
+                                style="width: 7rem; height: 5rem;"></div>
+                    </button>
+                </div>
                 <form class="form-signin" [formGroup]="loginForm">
                     <img class="mb-4" src="images/medialSign.svg" alt="" width="150" height="150">
                     <h1 class="h3 mb-3 font-weight-normal">Clinica Online</h1>
+
+
+
                     <label for="inputEmail" class="sr-only">Correo</label>
                     <input type="email" id="inputEmail" class="form-control" placeholder="Correo" name="email" required
                         autofocus formControlName="email">
@@ -32,31 +65,4 @@
         </div>
     </div>
 
-</div>
-<div style="position: relative; top:-5rem" *ngIf=" testing">
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient()">
-        <div class="mdc-fab__ripple"><img [src]="patientTesting?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
-        </div>
-        <!-- <span class="mdc-fab__icon material-icons">favorite</span> -->
-    </button>
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient1()">
-        <div class="mdc-fab__ripple"><img [src]="patientTesting2?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
-        </div>
-    </button>
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsClient2()">
-        <div class="mdc-fab__ripple"><img [src]="patientTesting3?.photos?.[0]" alt="" style="width: 5rem; height: 100%;">
-        </div>
-    </button>
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional()">
-        <div class="mdc-fab__ripple"><img [src]="professionalTesting?.photos?.[0]" alt=""
-                style="width: 5rem; height: 100%;"></div>
-    </button>
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsProfessional1()">
-        <div class="mdc-fab__ripple"><img [src]="professionalTesting2?.photos?.[0]" alt=""
-                style="width: 5rem; height: 100%;"></div>
-    </button>
-    <button class="mdc-fab" aria-label="Favorite" (click)="enterAsAdministrator()">
-        <div class="mdc-fab__ripple"><img [src]="administratorTesting?.photos?.[0]" alt=""
-                style="width: 5rem; height: 100%;"></div>
-    </button>
 </div>

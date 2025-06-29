@@ -6,6 +6,21 @@ import { environment } from '../../enviroments/enviroment';
   providedIn: 'root'
 })
 export class AuthService {
+  async getUsuarioById(id: string) {
+
+    const { data, error } = await this.supabase
+      .from('Usuarios')
+      .select('*')
+      .eq('IdUsuario', id)
+      .single();
+
+    if (error) {
+      console.log('Error al obtener el usuario:', error);
+      
+    }
+
+    return data;
+  }
 
   usuario: string | undefined = "";
 

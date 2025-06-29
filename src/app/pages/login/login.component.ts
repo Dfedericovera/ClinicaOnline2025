@@ -24,12 +24,12 @@ export class LoginComponent {
   mensaje: string = "";
   condicion: boolean = false;
   testing: boolean = false;
-  patientTesting: Patient | undefined;
-  patientTesting2: Patient | undefined;
-  patientTesting3: Patient | undefined;
-  professionalTesting: Professional | undefined;
-  professionalTesting2: Professional | undefined;
-  administratorTesting: Administrator | undefined;
+  patientTesting: any | undefined;
+  patientTesting2: any | undefined;
+  patientTesting3: any | undefined;
+  professionalTesting: any | undefined;
+  professionalTesting2: any | undefined;
+  administratorTesting: any | undefined;
   spinner: boolean;
   submitted: boolean;
   user$: Subscription = new Subscription();
@@ -38,8 +38,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    // private patientService: PatientService,
-    // private professionalService: ProfessionalService,
+    // private authService: PatientService,
+    // private authService: ProfessionalService,
     // private administratorService: AdministratorService
   ) {
     this.createForm();
@@ -60,30 +60,32 @@ export class LoginComponent {
 
   }
   loadTesters() {
-    // this.patientService.getPatientById("cEewD51RQsYrvaYHQ3eRAzkUHDJ3").then(testintgPatient =>
-    // {
-    //   this.patientTesting = testintgPatient;
-    // })
-    // this.patientService.getPatientById("eJy59XbCO5e4zkUplxg8D2qTmpJ2").then(testintgPatient =>
-    // {
-    //   this.patientTesting2 = testintgPatient;
-    // })
-    // this.patientService.getPatientById("EDbEwSOa7LffKBoGvCb1tjYcdvf1").then(testintgPatient =>
-    // {
-    //   this.patientTesting3 = testintgPatient;
-    // })
-    // this.professionalService.getProfessionalById("Gl3GGMtAYrWBeX4640f7mLvPTKx1").then(testingProfessional =>
-    // {
-    //   this.professionalTesting = testingProfessional;
-    // })
-    // this.professionalService.getProfessionalById("R2imG9PU9RhpfrgMhztOcJP6dSM2").then(testingProfessional =>
-    // {
-    //   this.professionalTesting2 = testingProfessional;
-    // })
-    // this.administratorService.getAdministratorById("R3zdRbRiInOlAqSyD4NDakhcBR13").then(testingAdministrator =>
-    // {
-    //   this.administratorTesting = testingAdministrator;
-    // })
+    this.authService.getUsuarioById("fde3a13a-59c1-40a2-8abf-7d92deed0bf5").then(testintgPatient =>
+    {
+      console.log('testing patient', testintgPatient);
+      
+      this.patientTesting = testintgPatient;
+    })
+    this.authService.getUsuarioById("b72a3e4a-ba9c-4b7c-b82a-c6719df4bc7e").then(testintgPatient =>
+    {
+      this.patientTesting2 = testintgPatient;
+    })
+    this.authService.getUsuarioById("56b96218-91d4-430a-80a1-00273c0813c5").then(testintgPatient =>
+    {
+      this.patientTesting3 = testintgPatient;
+    })
+    this.authService.getUsuarioById("a38285e4-da74-46d1-b37b-79f57a6e8ba0").then(testingProfessional =>
+    {
+      this.professionalTesting = testingProfessional;
+    })
+    this.authService.getUsuarioById("f201fa5b-e1a5-4ca4-ba4a-1e7f6ed90707").then(testingProfessional =>
+    {
+      this.professionalTesting2 = testingProfessional;
+    })
+    this.authService.getUsuarioById("f201fa5b-e1a5-4ca4-ba4a-1e7f6ed90707").then(testingAdministrator =>
+    {
+      this.administratorTesting = testingAdministrator;
+    })
   }
 
   createForm() {
