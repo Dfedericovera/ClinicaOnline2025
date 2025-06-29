@@ -72,7 +72,7 @@ export class AuthService {
   async registrarDatosusuario(datos: any) {
     // Grabar los datos del usuario en la base de datos de supabase llamada Usuarios
     // console.log(datos);
-    
+
     var respuesta = await this.supabase
       .from('Usuarios')
       .insert([
@@ -89,19 +89,20 @@ export class AuthService {
         },
       ]);
 
-      // console.log('Respuesta al registrar datos de usuario:', respuesta);
+    // console.log('Respuesta al registrar datos de usuario:', respuesta);
   }
 
-    async registrarEspecialidadesUsuario(datos: any) {
+  async registrarEspecialidadesUsuario(datos: any) {
+    console.log('Registrando especialidades para el usuario:', datos);
+    
     await this.supabase
-      .from('Especialidades')
+      .from('EspecialidadUsuario')
       .insert([
         {
-          IdUsuario: datos.id,
+          IdUsuario: datos.IdUsuario,
           IdEspecialidad: datos.IdEspecialidad
         }
-      ])
-      .select();
+      ]);
   }
 
   async subirImagenUsuario(file: File, userId: string): Promise<string> {
@@ -120,7 +121,7 @@ export class AuthService {
     }
   }
 
-  async getImagenDeUsuario(filePath: string){
+  async getImagenDeUsuario(filePath: string) {
     return await this.supabase.storage.from('imagenes').getPublicUrl(filePath).data.publicUrl;
   }
 

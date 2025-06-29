@@ -59,9 +59,8 @@ export class FormProfesionalComponent {
       specialty: [Array, Validators.required],
       approved: [""],
       usertype: [UserType.PROFESSIONAL],
-      recaptchaReactive: ["", Validators.required],
+      // recaptchaReactive: ["", Validators.required],
       photo1: ["", Validators.required],
-      photo2: ["", Validators.required],
     });
   }
 
@@ -94,9 +93,9 @@ export class FormProfesionalComponent {
             Foto1: pathPhoto1,
             id: user.user?.id,
           });
-          this.specialtysChoosen.forEach(especialidad => {
+          this.specialtysChoosen.forEach(async especialidad => {
             console.log('Especialidad seleccionada:', especialidad);
-            this.authService.registrarEspecialidadesUsuario({
+            await this.authService.registrarEspecialidadesUsuario({
               IdUsuario: user.user?.id,
               IdEspecialidad: especialidad.id
             });
