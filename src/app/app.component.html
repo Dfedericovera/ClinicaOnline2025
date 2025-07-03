@@ -1,34 +1,42 @@
 <header *ngIf="!isLoginPage()">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" routerLink="/Home">clinica-online-2025</a>
+        <a class="navbar-brand" routerLink="/home">Clinica Online</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" routerLink="/Home">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" routerLink="/QuienSoy">Quien Soy?<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" routerLink="/Chat">Chat<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" routerLink="/ListadoResultados">ListadoResultados<span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" routerLink="/Encuesta">Encuesta<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" routerLink="/ListadoEncuestas">Listado Encuestas<span class="sr-only">(current)</span></a>
-                </li> -->
+                <span *ngIf="usuario" style="display: flex;">
+                    <li class="nav-item active">
+                        <a class="nav-link btn-outline-secondary" routerLink="/myProfile"> Mi perfil <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active" *ngIf="usuario.role == 'profesional'">
+                        <a class="nav-link btn-outline-secondary" routerLink="/patients">Pacientes <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active" *ngIf="usuario.role == 'administrador'">
+                        <a class="nav-link btn-outline-secondary" routerLink="/users">Usuarios <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active" *ngIf="usuario.role == 'administrador'">
+                        <a class="nav-link btn-outline-secondary" routerLink="/myAppointments">Turnos <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active" *ngIf="usuario.role == 'paciente' || usuario.role == 'profesional'">
+                        <a class="nav-link btn-outline-secondary " routerLink="/myAppointments">Mis turnos<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item active" *ngIf="usuario.role == 'paciente' || usuario.role == 'administrador'">
+                        <a class="nav-link btn-outline-secondary" routerLink="/signupAppointment">Solicitar Turno <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                </span>
             </ul>
             <form class="form-inline mt-2 mt-md-0">
-                <p class="btn btn-outline-warning my-2 my-sm-0 mr-2 disabled ">{{email}}</p>
+                <p class="btn btn-outline-warning my-2 my-sm-0 mr-2 disabled " *ngIf="email">{{email}}</p>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="logOut()">Salir</button>
             </form>
         </div>

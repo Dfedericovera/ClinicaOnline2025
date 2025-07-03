@@ -1,11 +1,23 @@
 import { Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../enviroments/enviroment';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+
+
+  usuario: any | undefined = "";
+  email: string | undefined = "";
+
+  supabase = createClient(environment.apiUrl, environment.publicAnonKey);
+
+  constructor() {
+  }
+
   async getUsuarioById(id: string) {
 
     const { data, error } = await this.supabase
@@ -16,18 +28,78 @@ export class AuthService {
 
     if (error) {
       console.log('Error al obtener el usuario:', error);
-      
+
     }
 
     return data;
   }
 
-  usuario: string | undefined = "";
+  // subscribeUsuarios(): Observable<any> {
 
-  supabase = createClient(environment.apiUrl, environment.publicAnonKey);
+  //   return new Observable<any>((observer) => {
+  //     const channel = this.supabase.channel('custom-all-channel')
+  //       .on(
+  //         'postgres_changes',
+  //         { event: '*', schema: 'public', table: 'Usuarios' },
+  //         (payload) => {
+  //           console.log('Change received!', payload);
+  //           observer.next(payload);
+  //         }
+  //       )
+  //       .subscribe();
 
-  constructor() {
-    this.setUserEmail();
+  //     // Cleanup function when unsubscribed
+  //     return () => {
+  //       this.supabase.removeChannel(channel);
+  //     };
+  //   });
+  // }
+
+  getProfessionals() {
+    return this.supabase
+      .from('Usuarios')
+      .select('*')
+      .eq('role', 'profesional')
+      .then((response: { error: any; data: any; }) => {
+        if (response.error) {
+          console.error('Error al obtener posts:', response.error);
+          return Promise.reject(response.error);
+        } else {
+          console.log('Profesionales obtenidos correctamente:', response.data);
+          return Promise.resolve(response.data);
+        }
+      });
+  }
+
+  aprobarUsuario(id: string, approved: boolean) {
+    return this.supabase
+      .from('Usuarios')
+      .update({ approved: approved })
+      .eq('IdUsuario', id)
+      .then((response: { error: any; data: any; }) => {
+        if (response.error) {
+          console.error('Error al aprobar usuario:', response.error);
+          return Promise.reject(response.error);
+        } else {
+          console.log('Usuario aprobado correctamente:', response.data);
+          return Promise.resolve(response.data);
+        }
+      });
+  }
+  getPatients() {
+    return this.supabase
+      .from('Usuarios')
+      .select('*')
+      .eq('role', 'paciente')
+      .then((response: { error: any; data: any; }) => {
+        if (response.error) {
+          console.error('Error al obtener posts:', response.error);
+          return Promise.reject(response.error);
+        } else {
+          console.log('Pacientes obtenidos correctamente:', response.data);
+          return Promise.resolve(response.data);
+        }
+      });
   }
 
 
@@ -40,35 +112,45 @@ export class AuthService {
     if (error) {
       throw new Error(error.message);
     }
-    this.setUserEmail();
+    this.setUser(data.user.id);
     this.registrarLogUsuario(email);
+    console.log('login:', data);
+    this.email = email; // Aseguramos que el email esté en el objeto de usuario
+
     return data;
   }
 
   private registrarLogUsuario(email: string) {
     // Grabar el registro del usuario en la base de datos de supabase llamada LogUsuarios
-
     var res = this.supabase
       .from('LogUsuario')
       .insert([
-        { usuario: email, fechaDeIngreso: new Date().toISOString() },
+        {
+          email: email, fecha: new Date().toISOString()
+        },
       ])
       .select().then((response) => {
         if (response.error) {
-          console.error('Error al registrar el usuario:', response.error);
+          console.error('Error al registrar el LogUsuario:', response.error);
         } else {
-          console.log('Usuario registrado correctamente:', response.data);
+          console.log('LogUsuario registrado correctamente:', response.data);
         }
       });
   }
 
-  private setUserEmail() {
-    this.getUser().then(user => {
-      this.usuario = user.email;
-      console.log('Usuario autenticado:', this.usuario);
-    }).catch(err => {
-      console.error('Error fetching user:', err);
-    });
+  private async setUser(id: string) {
+    await this.supabase.from('Usuarios')
+      .select('*')
+      .eq('IdUsuario', id)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching user email:', error);
+        } else {
+          this.usuario = data;
+          console.log('setUser:', this.usuario);
+        }
+      });
   }
 
   async register(email: string, password: string) {
@@ -109,7 +191,7 @@ export class AuthService {
 
   async registrarEspecialidadesUsuario(datos: any) {
     console.log('Registrando especialidades para el usuario:', datos);
-    
+
     await this.supabase
       .from('EspecialidadUsuario')
       .insert([
@@ -155,7 +237,10 @@ export class AuthService {
     if (error || !data.user) {
       throw new Error(error?.message || 'No user is logged in');
     }
-    return data.user;
+    console.log('Usuario obtenido:', data.user);
+    this.email = data.user.email; // Aseguramos que el email esté en el objeto de usuario
+    await this.setUser(data.user.id);
+    return this.email;
   }
 
   async isAuthenticated(): Promise<boolean> {

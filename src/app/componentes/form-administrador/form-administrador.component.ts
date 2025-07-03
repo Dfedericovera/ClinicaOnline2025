@@ -9,15 +9,13 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-administrador',
-  imports: [AlertComponent,CommonModule,ReactiveFormsModule],
+  imports: [AlertComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './form-administrador.component.html',
   styleUrl: './form-administrador.component.css'
 })
 export class FormAdministradorComponent {
-  
+
   administratorForm: FormGroup = new FormGroup({});
-  photo1: FileI | null = null;
-  photos: Array<FileI> | null = null;
   registered: boolean;
 
   constructor(
@@ -25,91 +23,73 @@ export class FormAdministradorComponent {
     private fb: FormBuilder,
     // private administratorService:AdministratorService,
     private router: Router,
-  )
-  {
+  ) {
     this.registered = false;
-    this.photos = new Array();
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.createForm();
   }
 
-  createForm()
-  {
+  createForm() {
     this.administratorForm = this.fb.group({
       id: [""],
       name: ["", Validators.required],
-      dni: ["", [Validators.required, Validators.minLength(7)]],
-      age: ["", [Validators.required, Validators.min(18), Validators.max(99)]],
       lastName: ["", Validators.required],
+      age: ["", [Validators.required, Validators.min(18), Validators.max(99)]],
+      dni: ["", [Validators.required, Validators.minLength(7)]],
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(6)]],
-      usertype:[UserType.ADMINISTRATOR],
-      recaptchaReactive: ["", Validators.required],
+      photo1: ["", Validators.required],
+      usertype: [UserType.ADMINISTRATOR],
+      // recaptchaReactive: ["", Validators.required],
     });
   }
 
-  onSubmit()
-  {
-    try
-    {
-      this.assignPhotos();
-      // this.authService.register(this.administratorForm.controls.email.value, this.administratorForm.controls.password.value).then(user =>
-      // {
-      //   if (user)
-      //   {
-      //     this.administratorForm.controls['id'].setValue(user.uid);
-      //     this.administratorForm.removeControl("password");
-      //     this.administratorService.createAdministrator(this.administratorForm.value, this.photos).then(patient =>
-      //     {
-      //       console.log('Professional Created', patient);
-      //       user.updateProfile({
-      //         displayName: patient.name,
-      //       }).then(() =>
-      //       {
-      //         console.log('Now Verify your email to login.');
-      //         this.registered = true;
-      //       })
-      //     });
-      //     this.administratorForm.addControl("password",this.fb.control({password: "111111"}))
-      //   }
-      // }).catch(error => { console.log('Error', error); });
+  async onSubmit() {
+    try {
+      var pathPhoto1 = '';
+      await this.authService.subirImagenUsuario(this.administratorForm.controls['photo1'].value, `${this.administratorForm.controls['dni'].value}/photo1`).then((response) => {
+        if (response) {
+          console.log('Foto 1 subida correctamente:', response);
+          this.authService.getImagenDeUsuario(response).then((res) => {
+            pathPhoto1 = res;
+          });
+        }
+      });
 
-    } catch (error)
-    {
+      this.authService.register(this.administratorForm.controls['email'].value, this.administratorForm.controls['password'].value).then(user => {
+        if (user) {
+          console.log('Usuario registrado correctamente:', user);
+          this.authService.registrarDatosusuario({
+            nombre: this.administratorForm.controls['name'].value,
+            apellido: this.administratorForm.controls['lastName'].value,
+            edad: this.administratorForm.controls['age'].value,
+            dni: this.administratorForm.controls['dni'].value,
+            role: this.administratorForm.controls['usertype'].value,
+            Foto1: pathPhoto1,
+            id: user.user?.id,
+          });
+          this.registered = true;
+        }
+      });
+
+    } catch (error) {
       console.error(error);
     }
   }
 
-  handlePhoto1(file: Event)
-  {
-    const input = file.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.photo1 = {
-        name: file.name,
-        imageFile: file,
-        size: file.size.toString(),
-        type: file.type
-      };
-    } else {
-      this.photo1 = null;
-    }
+  handlePhoto1(file: any) {
+    this.administratorForm.controls['photo1'].setValue(file.target.files[0]);
   }
 
-  assignPhotos()
-  {
-    if (this.photo1 && this.photos)
-    {
-      this.photos.push(this.photo1);
-    }
-  }
 
-  resolved(captchaResponse: any)
-  {
+
+  resolved(captchaResponse: any) {
     /* console.log(`Resolved response token: ${captchaResponse}`); */
+  }
+  navigate() {
+    this.router.navigate(['/login']);
   }
 
 

@@ -40,7 +40,7 @@
                         <label for="edad">Edad</label>
                         <input type="number" class="form-control" id="edad" formControlName="age" placeholder="Edad"
                             required min="18" max="99">
-                            <div *ngIf="administratorForm.controls['age'].invalid && (administratorForm.controls['age'].dirty || administratorForm.controls['age'].touched)"
+                        <div *ngIf="administratorForm.controls['age'].invalid && (administratorForm.controls['age'].dirty || administratorForm.controls['age'].touched)"
                             class="alert alert-danger">
                             <div *ngIf="administratorForm.controls['age'].errors?.['required']">
                                 Edad es requerida.
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="dni">DNI</label>
@@ -115,13 +115,13 @@
                     siteKey="6LeKd98ZAAAAANCIjc5-WVR4PiaFaeLn9J1uh9bm" required>
                 </re-captcha> -->
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="administratorForm.invalid || !photo1"
+                <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="administratorForm.invalid"
                     (click)="onSubmit()">Registrar
                     Administrador</button>
                 <div class="container" *ngIf="registered">
-                    <app-alert mensaje="Administrador Registrado correctamente." color="warning"
-                        >
-                        <!-- (dismiss)="navigate()" -->
+                    <app-alert mensaje="Administrador Registrado correctamente." color="alert-warning"
+                        (dismiss)="navigate()">
+
                     </app-alert>
                 </div>
             </form>

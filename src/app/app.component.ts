@@ -10,25 +10,35 @@ import { AuthService } from './services/auth-service.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  title = 'clinica-online-2025';
-  email: any;
+  title = 'Clinica Online';
+  usuario: any;
+  email: string | undefined;
 
 
   constructor(public router: Router, public authService: AuthService) {
 
-   }
-
+  }
+  ngOnInit(): void {
+    this.authService.getUser().then((user: any) => {
+      console.log('Usuario obtenido despues de getUser:', user);
+      console.log(this.authService.usuario);
+      this.usuario = this.authService.usuario
+      this.setEmail(user);
+    });
+  }
 
   isLoginPage() {
-    this.email = this.authService.usuario;
-    // this.getUserEmail();
-    // console.log('Current URL:', this.router.url);
-    // Check if the current URL is '/login' or '/Registro'
+    this.usuario = this.authService.usuario;
     return this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/bienvenido';
   }
 
+  setEmail(email: string) {
+    this.email = email;
+    console.log('Email set:', this.email);
+
+  }
 
   logOut() {
     console.log('Logging out...');

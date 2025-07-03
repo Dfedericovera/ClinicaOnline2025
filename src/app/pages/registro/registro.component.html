@@ -8,8 +8,8 @@
         <button class="btn button-image-professional rounded" (click)="onChooseForm('professional')">
         </button>
     </div>
-    <div class="d-block text-center" >
-        <!-- *ngIf="user && user.usertype == 'administrator'" -->
+    <div class="d-block text-center" *ngIf="user && user.role == 'administrador'">
+        
         <button class="btn button-image-administrator rounded" (click)="onChooseForm('administrator')">
         </button>
     </div>

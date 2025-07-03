@@ -19,8 +19,10 @@
     "@angular/router": "^19.2.0",
     "@supabase/supabase-js": "^2.49.4",
     "bootstrap": "^4.5.3",
+    "jspdf": "^3.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
@@ -35,5 +37,10 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+  },
+  "overrides": {
+  "@supabase/supabase-js": {
+    "@supabase/auth-js": "2.61.0"
   }
+}
 }

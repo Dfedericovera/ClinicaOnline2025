@@ -60,17 +60,15 @@ export class LoginComponent {
 
   }
   loadTesters() {
-    this.authService.getUsuarioById("fde3a13a-59c1-40a2-8abf-7d92deed0bf5").then(testintgPatient =>
+    this.authService.getUsuarioById("56b96218-91d4-430a-80a1-00273c0813c5").then(testintgPatient =>
     {
-      console.log('testing patient', testintgPatient);
-      
       this.patientTesting = testintgPatient;
     })
     this.authService.getUsuarioById("b72a3e4a-ba9c-4b7c-b82a-c6719df4bc7e").then(testintgPatient =>
     {
       this.patientTesting2 = testintgPatient;
     })
-    this.authService.getUsuarioById("56b96218-91d4-430a-80a1-00273c0813c5").then(testintgPatient =>
+    this.authService.getUsuarioById("fde3a13a-59c1-40a2-8abf-7d92deed0bf5").then(testintgPatient =>
     {
       this.patientTesting3 = testintgPatient;
     })
@@ -82,7 +80,7 @@ export class LoginComponent {
     {
       this.professionalTesting2 = testingProfessional;
     })
-    this.authService.getUsuarioById("f201fa5b-e1a5-4ca4-ba4a-1e7f6ed90707").then(testingAdministrator =>
+    this.authService.getUsuarioById("19e1a81f-6597-49af-9224-cfc091958471").then(testingAdministrator =>
     {
       this.administratorTesting = testingAdministrator;
     })
@@ -97,19 +95,17 @@ export class LoginComponent {
 
   onLogin() {
     this.spinner = true;
-    console.log('Login', this.loginForm.value);
-
     this.authService.login(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value
     ).then((response) => {
-      console.log('Login successful', response);
+      // console.log('Login successful', response);
       this.spinner = false;
       this.bootColorAlert = "alert-success"
       this.mensaje = "Verificado✓";
       this.submitted = true;
       setTimeout(() => {
-        this.router.navigate(['/Home']);
+        this.router.navigate(['/home']);
       }, 2000)
 
     }).catch((error) => {
