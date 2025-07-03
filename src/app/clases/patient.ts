@@ -4,6 +4,11 @@ export class Patient extends Usuario{
     public age:number = 0;
     public dni:string = "";
     public obraSocial:string = "";
+Foto1: any;
+Foto2: any;
+nombre: any;
+apellido: any;
+edad: any;
 
     public constructor(init?: Partial<Patient>) {
         super()

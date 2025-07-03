@@ -2,6 +2,7 @@ import { UserType } from "../enumerados/userType";
 
 export class Usuario {
     public id: string = "";
+    public IdUsuario: string = "";
     public name: string = "";
     public lastName: string = "";
     public email: string = "";
