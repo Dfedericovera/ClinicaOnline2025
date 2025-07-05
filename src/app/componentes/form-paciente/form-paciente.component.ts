@@ -6,10 +6,11 @@ import { FileI } from '../../interface/file';
 import { AuthService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import { UserType } from '../../enumerados/userType';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-form-paciente',
-  imports: [AlertComponent, CommonModule, ReactiveFormsModule],
+  imports: [AlertComponent, CommonModule, ReactiveFormsModule,RecaptchaModule,RecaptchaFormsModule],
   templateUrl: './form-paciente.component.html',
   styleUrl: './form-paciente.component.css'
 })
@@ -45,7 +46,7 @@ export class FormPacienteComponent {
       photo1: ["", Validators.required],
       photo2: ["", Validators.required],
       id: [""],
-      // recaptchaReactive: ["", Validators.required],
+      recaptchaReactive: ["", Validators.required],
     });
   }
 

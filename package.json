@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "^2.49.4",
     "bootstrap": "^4.5.3",
     "jspdf": "^3.0.1",
+    "ng-recaptcha": "^13.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
@@ -39,8 +40,13 @@
     "typescript": "~5.7.2"
   },
   "overrides": {
-  "@supabase/supabase-js": {
-    "@supabase/auth-js": "2.61.0"
+    "@supabase/supabase-js": {
+      "@supabase/auth-js": "2.61.0"
+    },
+    "ng-recaptcha": {
+      "@angular/core": "^18.0.0",
+      "@angular/common": "^18.0.0",
+      "@angular/forms": "^18.0.0"
+    }
   }
-}
 }

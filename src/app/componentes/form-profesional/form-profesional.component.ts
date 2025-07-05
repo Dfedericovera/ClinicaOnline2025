@@ -10,10 +10,11 @@ import { Especialidad } from '../../clases/especialidad';
 import { SpecialtyListComponent } from "../specialty-list/specialty-list.component";
 import { SpecialtyFormComponent } from '../specialty-form/specialty-form.component';
 import { EspecialidadService } from '../../services/especialidad.service';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-form-profesional',
-  imports: [AlertComponent, CommonModule, ReactiveFormsModule, SpecialtyListComponent, SpecialtyFormComponent],
+  imports: [AlertComponent, CommonModule, ReactiveFormsModule, SpecialtyListComponent, SpecialtyFormComponent,RecaptchaModule,RecaptchaFormsModule],
   templateUrl: './form-profesional.component.html',
   styleUrl: './form-profesional.component.css'
 })
@@ -59,7 +60,7 @@ export class FormProfesionalComponent {
       specialty: [Array, Validators.required],
       approved: [""],
       usertype: [UserType.PROFESSIONAL],
-      // recaptchaReactive: ["", Validators.required],
+      recaptchaReactive: ["", Validators.required],
       photo1: ["", Validators.required],
     });
   }

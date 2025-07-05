@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
 import { UserType } from '../../enumerados/userType';
 import { AlertComponent } from "../alert/alert.component";
 import { CommonModule } from '@angular/common';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-form-administrador',
-  imports: [AlertComponent, CommonModule, ReactiveFormsModule],
+  imports: [AlertComponent, CommonModule, ReactiveFormsModule,RecaptchaModule,RecaptchaFormsModule],
   templateUrl: './form-administrador.component.html',
   styleUrl: './form-administrador.component.css'
 })
@@ -42,7 +43,7 @@ export class FormAdministradorComponent {
       password: ["", [Validators.required, Validators.minLength(6)]],
       photo1: ["", Validators.required],
       usertype: [UserType.ADMINISTRATOR],
-      // recaptchaReactive: ["", Validators.required],
+      recaptchaReactive: ["", Validators.required],
     });
   }
 
